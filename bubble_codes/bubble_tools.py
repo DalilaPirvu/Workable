@@ -15,7 +15,7 @@ import scipy.interpolate as intp
 from scipy.integrate import odeint
 from scipy.signal import find_peaks, peak_widths
 
-from scipy.interpolate import interp2d,interp1d
+from scipy.interpolate import interp2d, interp1d
 import scipy.interpolate as si
 
 import scipy.ndimage
@@ -619,3 +619,100 @@ def get_line(dataset, slope, offset):
 
 def f_surv(times, ntot):
     return np.array([1.-len(times[times<=ts])/ntot for ts in times])
+
+
+def FWHM(X,Y):
+    half_max = np.amax(Y)/2.
+    #find when function crosses line half_max (when sign of diff flips)
+    #take the 'derivative' of signum(half_max - Y[])
+    d = (half_max - Y[:-1]) - (half_max - Y[1:])
+    plt.plot(X[0:len(d)], d) #if you are interested
+    #find the left and right most indexes
+    left_idx = np.argwhere(d > 0)[0]; plt.axvline(left_idx, color='r')
+    right_idx = np.argwhere(d < 0)[-1]; plt.axvline(right_idx, color='r'); plt.show()
+    return X[right_idx] - X[left_idx] #return the difference (full width)
+
+######################################
+# Tools for oscillons
+
+def find_nucleation_center(bubble, phi_init, crit_thresh, crit_rad):
+    T, N = np.shape(bubble)
+
+    bubble_counts = np.count_nonzero(bubble >= crit_thresh, axis=1)
+    t0 = np.argmin(np.abs(bubble_counts - crit_rad))
+
+    bubble_counts = np.count_nonzero(bubble >= crit_thresh, axis=0)
+    x0 = np.argmax(bubble_counts)
+
+    return min(T-1,t0), min(N-1,x0)
+
+def get_bubble(exp_params, sim, crit_thresh, crit_rad, minduration):
+    path2CLEANsim = clean_sim_location(*exp_params, sim)
+    bubble = np.load(path2CLEANsim)
+
+    real = np.abs(bubble[0])
+    
+    # smoothing recommended
+    real = gaussian_filter(real, 1.5, mode='nearest')
+    
+    tcen, xcen = find_nucleation_center(real, phieq, crit_thresh, crit_rad)
+
+    if tcen - minduration < 0:
+        return None
+    ind = max(0, tcen - minduration)
+    return bubble[0, ind:tcen, :]
+
+def get_HT(array):  
+    array = array - np.mean(array)
+    w  = np.fft.fftfreq(len(array), d=1) * len(array)
+    FD = np.fft.fft(array, axis=0)
+    FD[w<=0.,:] = 0.
+    FD[w>0.,:] *= 2.
+    HD = np.fft.ifft(FD, axis=0)
+    return np.abs(HD)
+
+def get_osc_trajectory(array, row, col, extent):
+    T, N = np.shape(array)
+    maxLine = []
+    CCol = col
+    for rr in range(row)[::-1]:
+        if rr == row-1:
+            col = CCol
+        colmin = col - extent
+        colmax = col + extent+1
+        val = 0
+        for cc in range(colmin, colmax):
+            cc = cc%N
+            if array[rr][cc] > val:
+                val = array[rr][cc]
+                col = cc
+        maxLine.append(col)
+    maxLine = maxLine[::-1]
+    for rr in range(row, T):
+        if rr == row:
+            col = CCol
+        colmin = col - extent
+        colmax = col + extent+1
+        val = 0
+        for cc in range(colmin, colmax):
+            cc = cc%N
+            if array[rr][cc] > val:
+                val = array[rr][cc]
+                col = cc
+        maxLine.append(col)
+    return np.array(maxLine)
+
+# average oscillon trajectories
+def tolerant_mean(arrs):
+    lens = np.array([len(i) for i in arrs])
+    arr  = np.zeros((len(lens), np.max(lens)))
+    arr[:] = np.nan
+    for ri, osc in enumerate(arrs):
+        arr[ri, :len(osc)] = osc
+    return np.nanmean(arr, axis=0), np.nanstd(arr, axis=0)
+
+def flatten_comprehension(matrix):
+    return np.array([item for row in matrix for item in row])
+
+def flatten_comprehension2(matrix):
+    return np.array([np.abs(np.round(item,10)) for row in matrix for item in row])

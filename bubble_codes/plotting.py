@@ -41,32 +41,6 @@ f = mticker.ScalarFormatter(useOffset=False, useMathText=True)
 g = lambda x,pos : "${}$".format(f._formatSciNotation('%1.1e'%x))
 fmt = mticker.FuncFormatter(g)
 
-def beautify(ax, loc='best', times=1, ncol=1, ttl=None, bb=None):
-    try:
-        len(ax)
-    except:
-        ax = np.array([ax])
-    legs = []
-    for ai, aa in enumerate(ax.flatten()):
-    #    aa.grid(which='both', ls=':', color='lightgray', alpha=0.7)
-        aa.grid(which='major', ls=':', color='darkgray', alpha=0.7)
-        aa.tick_params(direction='in', which='both', top=True, right=True)
-        #aa.ticklabel_format(axis='both', style='scientific', scilimits=[0.,0.])
-        aa.xaxis.set_label_coords(0.5, times*0.0015)
-        aa.yaxis.set_label_coords(times*0.0015, 0.5)
-        aa.xaxis.label.set_color('k')
-        aa.yaxis.label.set_color('k')
-        aa.tick_params(axis='x', colors='k')
-        aa.tick_params(axis='y', colors='k')
-        aa.tick_params(direction='in', which='major')#, bottom=None, left=None, top=None, right=None)
-        aa.tick_params(direction='in', which='minor', bottom=None, left=None, top=None, right=None)
-        aa.spines['left'].set_color('k')
-        aa.spines['right'].set_color('k')
-        aa.spines['top'].set_color('k')
-        aa.spines['bottom'].set_color('k')
-        leg = aa.legend(title=ttl, ncol=ncol, loc=loc, bbox_to_anchor=bb, frameon=False, handlelength=1.5, labelspacing=0.3, columnspacing=0.6)
-        legs.append(leg)
-    return np.array(legs), ax
 
 # Define function for string formatting of scientific notation
 def sci_notation(num, decimal_digits=1, precision=None, exponent=None):
@@ -140,18 +114,6 @@ def simple_imshow(bubble, xList, tList, contour=False, title=None, ret=False, cm
     else:
         beautify(ax, times=-70); plt.tight_layout(); plt.show()
         return
-
-def simple_imshow_continue(ax, bubble, xList, tList, vmin, vmax, contour=False, title=None, cmap='tab20c'):
-    ext = [xList[0],xList[-1],tList[0],tList[-1]]
-    im = ax.imshow(bubble[0], interpolation='none', extent=ext, vmin=vmin, vmax=vmax, aspect='equal', origin='lower', cmap=cmap)
-    if contour:
-        ax.contour(xList, tList, bubble[0], levels=5, linewidths=0.5, colors='k')
-    clb = plt.colorbar(im, ax = ax, shrink=0.25)
-    plt.plot(0, 0, 'bo', ms=3)
-    plt.xlabel(r'$x$'); plt.ylabel(r'$t$')
-    plt.title(title)
-    return ax
-
 
 #Label line with line2D label data
 def labelLine(line,x,label=None,align=True,**kwargs):
@@ -282,3 +244,81 @@ class Multiple:
 
     def formatter(self):
         return plt.FuncFormatter(multiple_formatter(self.denominator, self.number, self.latex))
+
+
+def beautify(ax, loc='best', times=1, ncol=1, ttl=None, bb=None):
+    try:
+        len(ax)
+    except:
+        ax = np.array([ax])
+    legs = []
+    for ai, aa in enumerate(ax.flatten()):
+    #    aa.grid(which='both', ls=':', color='lightgray', alpha=0.7)
+        aa.grid(which='major', ls=':', color='darkgray', alpha=0.7)
+        aa.tick_params(direction='in', which='both', top=True, right=True)
+        #aa.ticklabel_format(axis='both', style='scientific', scilimits=[0.,0.])
+        aa.xaxis.set_label_coords(0.5, times*0.0015)
+        aa.yaxis.set_label_coords(times*0.0015, 0.5)
+        aa.xaxis.label.set_color('k')
+        aa.yaxis.label.set_color('k')
+        aa.tick_params(axis='x', colors='k')
+        aa.tick_params(axis='y', colors='k')
+        aa.tick_params(direction='in', which='major')#, bottom=None, left=None, top=None, right=None)
+        aa.tick_params(direction='in', which='minor', bottom=None, left=None, top=None, right=None)
+        aa.spines['left'].set_color('k')
+        aa.spines['right'].set_color('k')
+        aa.spines['top'].set_color('k')
+        aa.spines['bottom'].set_color('k')
+        leg = aa.legend(title=ttl, ncol=ncol, loc=loc, bbox_to_anchor=bb, frameon=False, handlelength=1.5, labelspacing=0.3, columnspacing=0.6)
+        legs.append(leg)
+    return np.array(legs), ax
+
+
+def beautify_nolegs(ax, loc='best', times=1, ncol=1, ttl=None, bb=None):
+    try:
+        len(ax)
+    except:
+        ax = np.array([ax])
+    for ai, aa in enumerate(ax.flatten()):
+    #    aa.grid(which='both', ls=':', color='lightgray', alpha=0.7)
+        aa.grid(which='major', ls=':', color='lightgray', alpha=0.7)
+        aa.tick_params(direction='in', which='both', top=True, right=True)
+        #aa.ticklabel_format(axis='both', style='scientific', scilimits=[0.,0.])
+        aa.xaxis.set_label_coords(0.5, times*0.0015)
+        aa.yaxis.set_label_coords(times*0.0015, 0.5)
+        aa.xaxis.label.set_color('k')
+        aa.yaxis.label.set_color('k')
+        aa.tick_params(axis='x', colors='k')
+        aa.tick_params(axis='y', colors='k')
+        aa.tick_params(direction='in', which='major')#, bottom=None, left=None, top=None, right=None)
+        aa.tick_params(direction='in', which='minor', bottom=None, left=None, top=None, right=None)
+        aa.spines['left'].set_color('k')
+        aa.spines['right'].set_color('k')
+        aa.spines['top'].set_color('k')
+        aa.spines['bottom'].set_color('k')
+    return ax
+
+def plot_zoomin(bubble, threshold=2., winsize=100, title=None):
+    real = np.copy(bubble)
+    real = real[0]
+    nT, nN = np.shape(real)
+    t_centre, x_centre = find_nucleation_center(real, phieq, crit_thresh, crit_rad)
+    tl_stop, tr_stop = int(max(0, t_centre - winsize)), int(min(nT, t_centre + winsize//2))
+    xl_stop, xr_stop = int(max(0, x_centre - winsize)), int(min(nN, x_centre + winsize))
+    real = real[tl_stop:tr_stop, xl_stop:xr_stop]
+    nT, nN = np.shape(real)
+    tcen, xcen = find_nucleation_center(real, phieq, crit_thresh, crit_rad)
+    t, x = np.linspace(-tcen, nT-1-tcen, nT), np.linspace(-xcen, nN-1-xcen, nN)
+    real[np.abs(real) > threshold] = threshold
+    simple_imshow([real], x, t, title=title, contour=False, ret=False)
+    return
+
+def simple_imshow_continue(ax, bubble, xList, tList, vmin, vmax, contour=False, title=None, aspect='auto', cmap='tab20c'):
+    ext = [xList[0],xList[-1],tList[0],tList[-1]]
+    im = ax.imshow(bubble, interpolation='none', extent=ext, vmin=vmin, vmax=vmax, aspect=aspect, origin='lower', cmap=cmap)
+    if contour:
+        ax.contour(xList, tList, bubble, levels=5, linewidths=0.5, colors='k')
+    clb = plt.colorbar(im, ax = ax, shrink=0.5)
+    ax.plot(0, 0, 'bo', ms=3)
+    ax.set_title(title)
+    return ax
