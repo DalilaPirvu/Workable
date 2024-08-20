@@ -1,6 +1,8 @@
-import os, sys
-print([ii for ii in sys.path])
+import os
+import sys
+
 sys.path.append('/home/dpirvu/project/paper_prefactor/bubble_codes/')
+
 import numpy as np
 import random
 
@@ -8,19 +10,11 @@ from functools import partial
 from itertools import cycle
 
 import scipy as scp
-import scipy.optimize as sco
-import scipy.signal as scs
-import scipy.interpolate as intp
-
+from scipy import optimize as sco, signal as scs, interpolate as si, ndimage
 from scipy.integrate import odeint
 from scipy.signal import find_peaks, peak_widths
-
-from scipy.interpolate import interp2d, interp1d
-import scipy.interpolate as si
-
-import scipy.ndimage
-from scipy.ndimage import gaussian_filter
-from scipy.ndimage import gaussian_filter1d
+from scipy.interpolate import interp1d, interp2d
+from scipy.ndimage import gaussian_filter, gaussian_filter1d
 
 from plotting import *
 from experiment import *
@@ -37,12 +31,12 @@ def extract_spec_data(nL, path_sim):
     return params, reshaped_dat
 
 
-
 def save_txt_file(filename, data):
     with open(filename, 'w') as f:
         for row in data:
             f.write('\t'.join(map(str, row)) + '\n')
     return
+
 
 def extract_data(nL, path_sim):
     with open(path_sim) as file:
@@ -53,6 +47,7 @@ def extract_data(nL, path_sim):
     nNnT, nC = np.shape(data)
     reshaped_dat = np.asarray([np.reshape(data[:,cc], (nNnT//nL, nL)) for cc in range(nC)])
     return params, reshaped_dat
+
 
 def get_realisation(nL, nTimeMAX, path_sim):
     params, data = extract_data(nL, path_sim)
@@ -91,29 +86,26 @@ def get_bubble_realisation(nL, path_sim):
 
 def check_decay(slice):
     right_phi = np.sum(slice > 10.)
-    left_phi  = np.sum(slice <-10.)
-    if right_phi==0 and left_phi==0: return 2
-    if right_phi > left_phi: return 0
-    else: return 1
+    left_phi = np.sum(slice < -10.)
+    if right_phi == 0 and left_phi == 0:
+        return 2
+    return 0 if right_phi > left_phi else 1
+
 
 def get_decay_time(real):
     fldreal = real[0,:,:]
     ums = np.sum(np.abs(fldreal) > 10., axis=-1)
     return np.argwhere(ums > 0.)[0][0]
 
+
 def centre_bubble(real, tdecay):
     nC, nT, nN = np.shape(real)
-    tamp = max(0, nT - 2*nN)
-    real = real[:,tamp:]
-
-    critslice = np.abs(real[0, tdecay, :])
-    x_centre = int(round(np.mean(np.argwhere(critslice > 1.))))
-    real = np.roll(real, nN//2 - x_centre, axis=-1)
-
-    # apply twice to be sure
-    critslice = np.abs(real[0, tdecay, :])
-    x_centre = int(round(np.mean(np.argwhere(critslice > 1.))))
-    real = np.roll(real, nN//2 - x_centre, axis=-1)
+    tamp = max(0, nT - 2 * nN)
+    real = real[:, tamp:]
+    for _ in range(2):  # Apply the rolling twice in one loop
+        critslice = np.abs(real[0, tdecay, :])
+        x_centre = int(round(np.mean(np.argwhere(critslice > 1.))))
+        real = np.roll(real, nN // 2 - x_centre, axis=-1)
     return real
 
 def bubble_counts_at_fixed_t(bubble, thresh):

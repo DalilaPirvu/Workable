@@ -122,6 +122,9 @@ critfield_file = lambda nL,m2,te: root_dir + batch_params(nL,m2,te) + '_critical
 # field, momentum
 normal = np.array([phieq, 0., 0.])
 
+###############################
+# Functions below are not debugged #
+
 def get_gradient(fld, lenLat, nLat):
     nnx = nLat//2+1
     dx  = lenLat/nLat
