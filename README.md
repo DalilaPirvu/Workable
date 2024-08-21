@@ -36,7 +36,7 @@ w/ and wevolvebubble/: These folders contain the codes necessary to run the simu
 
 Use the codes in the w/ and wevolvebubble/ folders to generate data compatible with the analysis scripts.
 
-These represent modified versions of the originally code "1d-Scalar" by J. Braden. For instructions on how to use it, as well as dependencies, see: https://github.com/jonathanbraden/1d-Scalar
+These represent modified versions of the original code "1d-Scalar" by J. Braden. For instructions on how to use it, as well as dependencies, see: https://github.com/jonathanbraden/1d-Scalar
 
 
 ### Additional dependencies:
