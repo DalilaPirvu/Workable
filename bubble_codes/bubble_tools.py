@@ -32,8 +32,7 @@ Custom modules: plotting and experiment, which should be present in the specifie
 
 Documentation:
 
-This script was documented with the assistance of ChatGPT-4 to ensure clarity 
-and comprehensiveness, making it easier for others to understand and use.
+This script was documented with the assistance of ChatGPT-4 to ensure clarity and comprehensiveness.
 
 """
 
