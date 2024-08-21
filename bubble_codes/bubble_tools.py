@@ -284,9 +284,11 @@ def centre_bubble(real, tdecay):
 
 # Define a function to multiply the bubble data array with the goal to unfold its causal tail from periodic boundary conditions
 # Causal tail = precursor OR onset of hyperbolic expansion
-def multiply_bubble(simulation, light_cone, phi_init, vCOM, normal, nL):
+def multiply_bubble(simulation, phi_init, normal, nL, light_cone=1, vCOM=0.9):
     '''
+    NOTE:
     After multiplying, one should apply another bubble centering operation.
+    Also, only multiply after centering!
     '''
     # If the center-of-mass velocity is negative, flip the bubble along the spatial axis
     if vCOM < 0:
