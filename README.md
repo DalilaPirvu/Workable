@@ -16,21 +16,24 @@ Utilize the tools in the bubble_codes/ folder to process your simulation data, c
 
 ### Repository Structure:
 
-1. bubble_codes/
-
-bubble_tools.py: The main script containing tools for processing, centering, and analyzing bubble data from simulations.
-
-plotting.py: A module dedicated to plotting and formatting graphs, ensuring that visualizations are clear and consistent.
-
-triage.py: A module for extracting simulation data and generating relevant data files for further analysis.
+** bubble_codes/ **
 
 experiment.py: Contains simulation parameters, definitions of the physical model, and paths to necessary data files.
 
-2. Jupyter Notebooks designed to demonstrate the usage of the functions provided in the bubble_tools.py script.
+bubble_tools.py: The main script containing tools for processing and analyzing bubble data from simulations.
 
-3. Simulation Codes
+triage.py: A module for extracting simulation data and generating relevant data files for further analysis.
 
-w/ and wevolvebubble/: These folders contain the codes necessary to run the simulations whose outputs are analyzed by the scripts in bubble_codes/. The output format of these simulations is assumed in the data extraction and analysis scripts. Additional details in triage.py and bubble_tools.py
+plotting.py: A module dedicated to plotting and formatting graphs, to ensure that visualizations are clear and consistent.
+
+** Jupyter Notebooks **
+
+
+Designed to interact with and demonstrate the usage of the functions provided in bubble_tools.py
+
+** w/ and wevolvebubble/: **
+
+These folders contain the codes necessary to run the simulations whose outputs are analyzed by the scripts in bubble_codes/. The output format of these simulations is assumed in the data extraction and analysis scripts. Additional details in triage.py and bubble_tools.py
 
 ### Run Simulations: 
 
