@@ -16,7 +16,7 @@ Utilize the tools in the bubble_codes/ folder to process your simulation data, c
 
 ### Repository Structure:
 
-** bubble_codes/ **
+** Folder bubble_codes/ **
 
 experiment.py: Contains simulation parameters, definitions of the physical model, and paths to necessary data files.
 
@@ -28,12 +28,11 @@ plotting.py: A module dedicated to plotting and formatting graphs, to ensure tha
 
 ** Jupyter Notebooks **
 
-
 Designed to interact with and demonstrate the usage of the functions provided in bubble_tools.py
 
-** w/ and wevolvebubble/: **
+** Folders w/ and wevolvebubble/: **
 
-These folders contain the codes necessary to run the simulations whose outputs are analyzed by the scripts in bubble_codes/. The output format of these simulations is assumed in the data extraction and analysis scripts. Additional details in triage.py and bubble_tools.py
+These folders contain the codes necessary to run the simulations whose outputs are analyzed by the scripts in bubble_codes/. The output format of these simulations is assumed in the data extraction and analysis scripts. Additional details can be found in the documentation for triage.py and bubble_tools.py
 
 ### Run Simulations: 
 
