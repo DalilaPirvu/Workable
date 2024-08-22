@@ -12,11 +12,11 @@ Version: 1.0
 
 This repository contains a collection of Python scripts, modules, and Jupyter notebooks designed to facilitate the analysis and visualization of bubble nucleation in real-time, field-theoretic simulations.
 
-Utilize the tools in the bubble_codes/ folder to process your simulation data, calculate key physical quantities, and produce insightful visualizations.
+Utilize these tools to process simulation data, calculate key physical quantities, and produce insightful visualizations.
 
 ### Repository Structure
 
-##### Folder `bubble_codes/':
+##### Folder `bubble_codes/`:
 
   - experiment.py: Contains simulation parameters, definitions of the physical model, and paths to necessary data files.
   
@@ -28,18 +28,18 @@ Utilize the tools in the bubble_codes/ folder to process your simulation data, c
 
 ##### Jupyter Notebooks:
 
-Designed to interact with and demonstrate the usage of the functions provided in `bubble_tools.py'. Additional usage examples can be found in the `.ipynb' and `.html' files contained in other repositories on my profile.
+Designed to interact with and demonstrate the usage of the functions provided in `bubble_tools.py`. Additional usage examples can be found in the `.ipynb` and `.html` files contained in other repositories on my profile.
 
 
-##### Folders `w/' and `wevolvebubble/':
+##### Folders `w/` and `wevolvebubble/`:
 
-These folders contain the codes necessary to run the simulations whose outputs are analyzed by the scripts in `bubble_codes/'. The output format of these simulations is assumed in the data extraction and analysis scripts. Additional details can be found in the documentation for `triage.py' and `bubble_tools.py'.
+These folders contain the codes necessary to run the simulations whose outputs are analyzed by the scripts in `bubble_codes/`. The output format of these simulations is assumed in the data extraction and analysis scripts. Additional details can be found in the documentation for `triage.py` and `bubble_tools.py`.
 
 ### Run Simulations
 
-Use the codes in the `w/' and `wevolvebubble/' folders to generate data compatible with the analysis scripts.
+Use the codes in the `w/` and `wevolvebubble/` folders to generate data compatible with the analysis scripts.
 
-These represent modified versions of the original code "1d-Scalar" by J. Braden. For instructions on how to use it, as well as dependencies, see: https://github.com/jonathanbraden/1d-Scalar
+These represent modified versions of the original code "1d-Scalar" by J. Braden. For instructions on how to use it, as well as dependencies, see: `https://github.com/jonathanbraden/1d-Scalar`.
 
 
 ### Additional dependencies
