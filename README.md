@@ -14,8 +14,6 @@ This repository contains a collection of Python scripts, modules, and Jupyter no
 
 Utilize the tools in the bubble_codes/ folder to process your simulation data, calculate key physical quantities, and produce insightful visualizations.
 
-Additional usage examples can be found in the `.ipynb' and `.html' files contained in other repositories on my profile.
-
 ### Repository Structure
 
 ##### Folder `bubble_codes/':
@@ -30,7 +28,8 @@ Additional usage examples can be found in the `.ipynb' and `.html' files contain
 
 ##### Jupyter Notebooks:
 
-Designed to interact with and demonstrate the usage of the functions provided in bubble_tools.py
+Designed to interact with and demonstrate the usage of the functions provided in `bubble_tools.py'. Additional usage examples can be found in the `.ipynb' and `.html' files contained in other repositories on my profile.
+
 
 ##### Folders `w/' and `wevolvebubble/':
 
